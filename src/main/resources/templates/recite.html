@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>主页</title>
+    <div th:include="common :: commonheader"></div>
+</head>
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+    <div th:replace="common :: #navbar"></div>
+    <div th:replace="common :: #sidebar"></div>
+    <!-- Content Wrapper-->
+    <div class="content-wrapper">
+        <!-- content -->
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <!-- Default box -->
+                        <div class="card" style="margin-top: 30px;text-align:center">
+                            <div class="card-header">
+                                <h4>背诵单词</h4>
+                            </div>
+                            <div class="card-body" style="height: 250px">
+                                <div id="chinese" style="margin-top: 20px"></div>
+                                <input id="input" type="text" placeholder="输入正确的单词"
+                                       style="width: 400px;height:80px;text-align: center;margin-top: 20px">
+                                <div id="english" style="margin-top: 20px"></div>
+                            </div>
+                            <div class="card-footer">
+                                <button id="btn">提交</button>
+                            </div>
+                        </div>
+                        <!-- /.card -->
+                    </div>
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.container-fluid -->
+        </div>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+    <div th:replace="common :: #footer"></div>
+</div>
+<div th:replace="common :: #sricpt"></div>
+
+<script th:inline="javascript">
+    a = [[${reciteList}]]
+    i = 0
+    chinese = document.querySelector("#chinese")
+    input = document.querySelector("#input")
+    btn = document.querySelector("#btn")
+    english = document.querySelector("#english")
+    chinese.innerText = a[i].chinese
+    btn.addEventListener("click", function (e) {
+        if (btn.innerText == "下一个") {
+            i += 1
+            btn.innerText = "提交"
+            english.innerText = ""
+            if (i >= a.length) {
+                chinese.innerText = ""
+                input.value = "无单词"
+            } else {
+                chinese.innerText = a[i].chinese
+                input.value = ""}
+        } else {
+            if (i >= a.length) {
+                btn.innerText = "提交"
+                input.value = "无单词"
+            } else {
+                if (input.value == a[i].english) {
+                    english.innerText = "正确"
+                    $.ajax({
+                        type: "post",
+                        url: "/Recite",
+                        async: true,
+                        data: {"english": a[i].english}
+                    })
+                } else {
+                    english.innerText = "错误，正确的单词：" + a[i].english
+                    $.ajax({
+                        type: "post",
+                        url: "/notRecite",
+                        async: true,
+                        data: {"english": a[i].english}
+                    })}
+                btn.innerText = "下一个"
+            }
+        }
+    })
+</script>
+<script type="text/javascript">
+    // 多个音频时播放一个
+    const audios = document.getElementsByTagName("audio");
+
+    // 暂停函数
+    function pauseAll() {
+        var self = this;
+        [].forEach.call(audios, function (i) {
+            // 将audios中其他的audio全部暂停
+            i !== self && i.pause()
+        })
+    }
+
+    // 给play事件绑定暂停函数
+    ;
+    [].forEach.call(audios, function (i) {
+        i.addEventListener('play', pauseAll.bind(i))
+    })
+    //document.getElementById('audio控件ID').src='要播放的音频url'
+    //document.querySelector('a').onclick = () => new Audio('../static/voice/1.mp3').play()
+</script>
+<!-- jQuery -->
+<script src="../static/js/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="../static/js/bootstrap.min.js"></script>
+<!-- AdminLTE App -->
+<script src="../static/js/adminlte.min.js"></script>
+</body>
+</html>

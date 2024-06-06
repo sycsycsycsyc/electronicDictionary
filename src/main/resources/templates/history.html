@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>历史记录</title>
+    <link rel="shortcut icon" href="#" type="image/png">
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="../static/fonts/fontawesome-free/css/all.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="../static/css/adminlte.min.css">
+
+    <div th:include="common :: commonheader"></div>
+
+</head>
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+    <div th:replace="common :: #navbar"></div>
+    <div th:replace="common :: #sidebar(active='history.html')"></div>
+    <div class="content-wrapper">
+
+        <!-- content -->
+        <div class="content">
+            <div class="container-fluid">
+                <!-- Timelime example  -->
+                <div class="row" style="margin-left: 100px;">
+                    <div class="col-md-10">
+                        <!-- The time line -->
+                        <div class="timeline" th:each="dateHistory:${session.dateHistory}">
+                            <!-- timeline time label -->
+                            <div class="time-label">
+                                <span class="bg-red" th:text="${dateHistory}"></span>
+                            </div>
+                            <div th:each="allHistory:${session.allHistory}"
+                                 th:if="${dateHistory} eq ${allHistory.date.toString()}">
+                                <i class="fas fa-envelope bg-blue" style="margin-top: 25px;"></i>
+                                <div class="timeline-item" style="margin-left: 80px;">
+                                    <h3 class="timeline-header">
+                                                <span class="time" th:text="${allHistory.time}"><i
+                                                        class="fas fa-clock"></i> 12:05</span>
+                                    </h3>
+                                    <div class="timeline-body" th:text="${allHistory.option}"></div>
+                                    <div class="timeline-body" th:text="${allHistory.project}"></div>
+
+                                </div>
+                            </div><div>
+                            <i class="fas fa-clock bg-gray"></i>
+                        </div>
+                        </div>
+
+                    </div>
+                    <!-- /.col -->
+                </div>
+            </div>
+            <!-- /.timeline -->
+        </div>
+    </div>
+    <!-- /.content-wrapper -->
+    <div th:replace="common :: #footer"></div>
+</div>
+<div th:replace="common :: #sricpt"></div>
+
+
+<!-- jQuery -->
+<script src="../static/js/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="../static/js/bootstrap.min.js"></script>
+<!-- AdminLTE App -->
+<script src="../static/js/adminlte.min.js"></script>
+</body>
+</html>

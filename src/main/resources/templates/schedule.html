@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>背诵进度</title>
+    <link rel="shortcut icon" href="#" type="image/png">
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="../static/fonts/fontawesome-free/css/all.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="../static/css/adminlte.min.css">
+
+    <div th:include="common :: commonheader"></div>
+    <style>
+        li {
+            display: inline-block;
+        }
+    </style>
+</head>
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+    <div th:replace="common :: #navbar"></div>
+    <div th:replace="common :: #sidebar(active='schedule.html')"></div>
+    <!-- Content Wrapper-->
+    <div class="content-wrapper">
+        <!-- content -->
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-4">
+                        <!-- small card -->
+                        <div class="small-box bg-blue">
+                            <div class="inner">
+                                <p>未背单词</p>
+                                <h3 th:text="${session.allCount}-${session.scheduleCount}+'个'">  </h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <!-- small card -->
+                        <div class="small-box bg-blue">
+                            <div class="inner">
+                                <p>进度</p>
+                                <h3 th:text="${session.scale}+'%'"> </h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <!-- small card -->
+                        <div class="small-box bg-blue">
+                            <div class="inner">
+                                <p>已背单词</p>
+                                <h3 th:text="${session.scheduleCount}+'个'"> </h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">未背单词</h3>
+                            </div>
+                            <!-- /.card-header -->
+                            <div class="card-body table-responsive p-0">
+                                <table class="table table-hover text-nowrap">
+                                    <thead>
+                                    <tr>
+                                        <th>英语</th>
+                                        <th>中文</th>
+                                        <th>声音</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="dictionary:${session.dictionary.getList()}">
+                                        <td th:text="${dictionary.getEnglish()}"></td>
+                                        <td th:text="${dictionary.getChinese()}"></td>
+                                        <td width="300px">
+                                            <audio  style="width: 250px" controls controlslist="nodownload  nofullscreen noremoteplayback">
+                                                <source th:src="@{${dictionary.getVoice()}} "
+                                                        src="../static/voice/1.mp3"
+                                                        type="audio/mpeg">
+                                            </audio>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                        <div style="margin-top: 20px;text-align:center">
+                            <div>
+                                当前第<span th:text="${session.dictionary.pageNum}"></span> 页，
+                                共<span th:text="${session.dictionary.pages}"></span> 页，
+                                <span th:text="${session.dictionary.total}"></span>条记录
+                            </div>
+                            <hr/>
+                            <ul  style="white-space:nowrap;" class="col-12">
+                                <!--th:if="${studentPageInfo.hasPreviousPage}"}-->
+                                <li th:if="${session.dictionary.hasPreviousPage}"}>
+                                    <!--hasPreviousPage默认值为false， 如果有上一页，则不显示首页-->
+                                    <a class="btn btn-block btn-primary"
+                                       th:href="@{/schedule?pageNum2=}+${1}">首页</a>
+                                </li>
+                                <li th:if="${session.dictionary.hasPreviousPage}">
+                                    <!--hasPreviousPage默认值为false， 如果有上一页，则不显示-->
+                                    <a class="btn btn-block btn-primary"
+                                       th:href="@{/schedule?pageNum2=}+${session.dictionary.prePage}">上一页</a>
+                                </li>
+                                <li th:each="nav:${session.dictionary.navigatepageNums}">
+                                    <!--navigatepageNums是一个数组：遍历所有导航页号。 -->
+                                    <a class="btn btn-block btn-primary"
+                                       th:href="@{/schedule?pageNum2=}+${nav}" th:text="${nav}"
+                                       th:if="${nav != session.dictionary.pageNum}"></a>
+                                    <!--如果不是当前页则可以跳转其他页面。遍历展示-->
+                                    <a class="btn btn-block btn-primary"
+                                       th:class="${'btn btn-block btn-info'}"
+                                       th:if="${nav == session.dictionary.pageNum}"
+                                       th:text="${nav}"></a>
+                                    <!--如果是当前页则有样式。遍历 展示-->
+                                </li>
+                                <li th:if="${session.dictionary.hasNextPage}">
+                                    <!--hasNextPage默认值为false， 如果没有下一页，则不显示-->
+                                    <a class="btn btn-block btn-primary"
+                                       th:href="@{/schedule?pageNum2=}+${session.dictionary.nextPage}">下一页</a>
+                                </li>
+                                <li th:if="${session.dictionary.pageNum < session.dictionary.pages}"
+                                >
+                                    <!--如果当前页小于总页数则不显示尾页 -->
+                                    <a class="btn btn-block btn-primary"
+                                       th:href="@{/schedule?pageNum2=}+${session.dictionary.pages}">尾页</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- /.card -->
+                    </div>
+                    <div class="col-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">已背单词</h3>
+                                <div style="margin-left:250px;width: 150px;height:20px;text-align: center">
+                                    <a  th:href="@{/recite}">检查背诵</a>
+                                </div>
+
+                            </div>
+                            <!-- /.card-header -->
+                            <div class="card-body table-responsive p-0">
+                                <table class="table table-hover text-nowrap">
+                                    <thead>
+                                    <tr>
+                                        <th>英语</th>
+                                        <th>中文</th>
+                                        <th>声音</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="scheduleList:${session.scheduleList.getList()}">
+                                        <td th:text="${scheduleList.getEnglish()}"></td>
+                                        <td th:text="${scheduleList.getChinese()}"></td>
+                                        <td width="350px">
+                                            <audio  style="width: 250px" controls controlslist="nodownload  nofullscreen noremoteplayback">
+                                                <source th:src="@{${scheduleList.getVoice()}} "
+                                                        src="../static/voice/1.mp3"
+                                                        type="audio/mpeg">
+                                            </audio>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                        <div style="margin-top: 20px;text-align:center">
+                            <div>
+                                当前第<span th:text="${session.scheduleList.pageNum}"></span> 页，
+                                共<span th:text="${session.scheduleList.pages}"></span> 页，
+                                <span th:text="${session.scheduleList.total}"></span>条记录
+                            </div>
+                            <hr/>
+                            <ul  style="white-space:nowrap;" class="col-12">
+                                <!--th:if="${studentPageInfo.hasPreviousPage}"}-->
+                                <li th:if="${session.scheduleList.hasPreviousPage}"}>
+                                    <!--hasPreviousPage默认值为false， 如果有上一页，则不显示首页-->
+                                    <a class="btn btn-block btn-primary"
+                                       th:href="@{/schedule?pageNum=}+${1}">首页</a>
+                                </li>
+                                <li th:if="${session.scheduleList.hasPreviousPage}">
+                                    <!--hasPreviousPage默认值为false， 如果有上一页，则不显示-->
+                                    <a class="btn btn-block btn-primary"
+                                       th:href="@{/schedule?pageNum=}+${session.scheduleList.prePage}">上一页</a>
+                                </li>
+                                <li th:each="nav:${session.scheduleList.navigatepageNums}">
+                                    <!--navigatepageNums是一个数组：遍历所有导航页号。 -->
+                                    <a class="btn btn-block btn-primary"
+                                       th:href="@{/schedule?pageNum=}+${nav}" th:text="${nav}"
+                                       th:if="${nav != session.scheduleList.pageNum}"></a>
+                                    <!--如果不是当前页则可以跳转其他页面。遍历展示-->
+                                    <a class="btn btn-block btn-primary"
+                                       th:class="${'btn btn-block btn-info'}"
+                                       th:if="${nav == session.scheduleList.pageNum}"
+                                       th:text="${nav}"></a>
+                                    <!--如果是当前页则有样式。遍历 展示-->
+                                </li>
+                                <li th:if="${session.scheduleList.hasNextPage}">
+                                    <!--hasNextPage默认值为false， 如果没有下一页，则不显示-->
+                                    <a class="btn btn-block btn-primary"
+                                       th:href="@{/schedule?pageNum=}+${session.scheduleList.nextPage}">下一页</a>
+                                </li>
+                                <li th:if="${session.scheduleList.pageNum < session.scheduleList.pages}"
+                                >
+                                    <!--如果当前页小于总页数则不显示尾页 -->
+                                    <a class="btn btn-block btn-primary"
+                                       th:href="@{/schedule?pageNum=}+${session.scheduleList.pages}">尾页</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+    <div th:replace="common :: #footer"></div>
+</div>
+<div th:replace="common :: #sricpt"></div>
+
+
+<!-- jQuery -->
+<script src="../static/js/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="../static/js/bootstrap.min.js"></script>
+<!-- AdminLTE App -->
+<script src="../static/js/adminlte.min.js"></script>
+</body>
+</html>

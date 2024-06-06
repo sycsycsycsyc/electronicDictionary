@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>主页</title>
+    <link rel="shortcut icon" href="#" type="image/png">
+    <!--    &lt;!&ndash; Google Font: Source Sans Pro &ndash;&gt;
+        <link rel="stylesheet"
+              href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+        &lt;!&ndash; Font Awesome Icons &ndash;&gt;
+        <link rel="stylesheet" href="../static/fonts/fontawesome-free/css/all.min.css">
+        &lt;!&ndash; Theme style &ndash;&gt;
+        <link rel="stylesheet" href="../static/css/adminlte.min.css">-->
+    <div th:include="common :: commonheader"></div>
+    <style>
+        li {
+            display: inline-block;
+        }
+    </style>
+</head>
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+    <div th:replace="common :: #navbar"></div>
+    <div th:replace="common :: #sidebar(active='main.html')"></div>
+
+    <!-- Content Wrapper-->
+    <div class="content-wrapper">
+        <!-- content -->
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <p style="color: #ff0000 ; margin-top: 10px; line-height:30px; height: 30px;text-align: center;"
+                           th:text="${session.msg2}" th:if="${not #strings.isEmpty(session.msg2)}"></p>
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">单词</h3>
+                            </div>
+                            <!-- /.card-header -->
+                            <div class="card-body table-responsive p-0">
+                                <table class="table table-hover text-nowrap">
+                                    <thead>
+                                    <tr>
+                                        <th>英语</th>
+                                        <th>中文</th>
+                                        <th>声音</th>
+                                        <th>操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="dictionary:${session.dictionary.getList()}">
+                                        <td th:text="${dictionary.getEnglish()}"></td>
+                                        <td th:text="${dictionary.getChinese()}"></td>
+                                        <td width="350px">
+                                            <audio style="width: 300px" controls
+                                                   controlslist="nodownload  nofullscreen noremoteplayback">
+                                                <source th:src="@{${dictionary.getVoice()}} "
+                                                        src="../static/voice/1.mp3"
+                                                        type="audio/mpeg">
+                                            </audio>
+                                        </td>
+                                        <td>
+                                            <a class="btn btn-block btn-primary"
+                                               th:href="@{/add/}+${dictionary.getEnglish()}">添加单词本</a>
+                                        </td>
+                                        <td>
+                                            <a class="btn btn-block btn-primary"
+                                               th:href="@{/add2/}+${dictionary.getEnglish()}">已背</a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                    <!-- /.card-body -->
+                                </table>
+                            </div>
+                        </div>
+                        <!-- /.card -->
+                        <div style="margin-top: 20px;text-align:center" >
+                            <div>
+                                当前第<span th:text="${session.dictionary.pageNum}"></span> 页，
+                                共<span th:text="${session.dictionary.pages}"></span> 页，
+                                <span th:text="${session.dictionary.total}"></span>条记录
+                            </div>
+                            <hr/>
+                            <ul style="white-space:nowrap;" class="col-12">
+                                <!--th:if="${studentPageInfo.hasPreviousPage}"}-->
+                                <li th:if="${session.dictionary.hasPreviousPage}" }>
+                                    <!--hasPreviousPage默认值为false， 如果有上一页，则不显示首页-->
+                                    <a class="btn btn-block btn-primary"
+                                       th:href="@{/main?pageNum=}+${1}">首页</a>
+                                </li>
+                                <li th:if="${session.dictionary.hasPreviousPage}">
+                                    <!--hasPreviousPage默认值为false， 如果有上一页，则不显示-->
+                                    <a class="btn btn-block btn-primary"
+                                       th:href="@{/main?pageNum=}+${session.dictionary.prePage}">上一页</a>
+                                </li>
+                                <li th:each="nav:${session.dictionary.navigatepageNums}">
+                                    <!--navigatepageNums是一个数组：遍历所有导航页号。 -->
+                                    <a class="btn btn-block btn-primary"
+                                       th:href="@{/main?pageNum=}+${nav}" th:text="${nav}"
+                                       th:if="${nav != session.dictionary.pageNum}"></a>
+                                    <!--如果不是当前页则可以跳转其他页面。遍历展示-->
+                                    <a class="btn btn-block btn-primary"
+                                       th:class="${'btn btn-block btn-info'}"
+                                       th:if="${nav == session.dictionary.pageNum}"
+                                       th:text="${nav}"></a>
+                                    <!--如果是当前页则有样式。遍历 展示-->
+                                </li>
+                                <li th:if="${session.dictionary.hasNextPage}">
+                                    <!--hasNextPage默认值为false， 如果没有下一页，则不显示-->
+                                    <a class="btn btn-block btn-primary"
+                                       th:href="@{/main?pageNum=}+${session.dictionary.nextPage}">下一页</a>
+                                </li>
+                                <li th:if="${session.dictionary.pageNum < session.dictionary.pages}"
+                                >
+                                    <!--如果当前页小于总页数则不显示尾页 -->
+                                    <a class="btn btn-block btn-primary"
+                                       th:href="@{/main?pageNum=}+${session.dictionary.pages}">尾页</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.container-fluid -->
+        </div>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+
+<div th:replace="common :: #footer"></div>
+
+</div>
+<div th:replace="common :: #sricpt"></div>
+<script type="text/javascript">
+    // 多个音频时播放一个
+    const audios = document.getElementsByTagName("audio");
+
+    // 暂停函数
+    function pauseAll() {
+        var self = this;
+        [].forEach.call(audios, function (i) {
+            // 将audios中其他的audio全部暂停
+            i !== self && i.pause()
+        })
+    }
+
+    // 给play事件绑定暂停函数
+    ;
+    [].forEach.call(audios, function (i) {
+        i.addEventListener('play', pauseAll.bind(i))
+    })
+    //document.getElementById('audio控件ID').src='要播放的音频url'
+    //document.querySelector('a').onclick = () => new Audio('../static/voice/1.mp3').play()
+</script>
+<!-- jQuery -->
+<script src="../static/js/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="../static/js/bootstrap.min.js"></script>
+<!-- AdminLTE App -->
+<script src="../static/js/adminlte.min.js"></script>
+</body>
+</html>

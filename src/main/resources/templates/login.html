@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"><!--zh-CN-->
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="#" type="image/png">
+
+    <title>登录</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" type="text/css">
+    <link rel="stylesheet" href="../static/css/style.css" th:href="@{/css/style.css}" type="text/css">
+
+
+    <!--[if lt IE 9]>
+    <script src="../static/js/html5shiv.js" th:src="@{/js/html5shiv.js}"></script>
+    <script src="../static/js/html5shiv.js" th:src="@{/js/respond.min.js}"></script>
+    <![endif]-->
+
+</head>
+<body th:style="'background-image: url(/images/background.jpg)'"
+style="background-image: url('../static/images/background.jpg');">
+
+<!--style="background-color: #08AEEA;
+background-image: linear-gradient(240deg, #08AEEA 0%, #2AF598 100%);"-->
+
+
+<!--<div class="row">
+    <div class="col-xs-12 col-md-8">.col-xs-12 .col-md-8</div>
+    <div class="col-xs-6 col-md-4">.col-xs-6 .col-md-4</div>
+</div>-->
+<form class="inner_box" th:action="@{/user/login}" method="post">
+    <div class="left_label"></div>
+    <div class="form">
+        <p class="title"><span>登&nbsp录</span></p>
+        <p><input type="text" name="username" placeholder="昵称" required="" autofocus=""></p>
+        <p><input type="password" name="password" placeholder="密码" required=""></p>
+        <p style="color: #ff0000 ;height: 5px;" th:text="${msg}" th:if="${not #strings.isEmpty(msg)}"></p>
+        <div class="chk">
+            <span><input type="checkbox" name="remember" value="1">自动登录</span>
+        </div>
+    </div>
+    <div class="right_label"></div>
+    <div class="signIn_btn">
+        <input type="submit" value="登录" style="background-color: rgba(15,229,128,0.5)">
+        <p><a href="register.html" th:href="@{/register}" style="position: absolute; left: 100px">注册</a>
+            <a href="forget.html" th:href="@{/forget}" style="position: absolute; right: 100px">忘记密码</a></p>
+    </div>
+</form>
+<!--jQuery-->
+<script src="../static/js/jquery/jquery.min.js" th:src="@{/js/jquery/jquery.min.js}"></script>
+<!-- Bootstrap  JavaScript 插件。-->
+<script src="../static/js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
+</body>
+</html>

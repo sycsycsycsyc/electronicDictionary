@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.shi.electronicdictionary.mapper.ScheduleMapper">
+
+    <select id="getByFlag" resultType="com.shi.electronicdictionary.pojo.Schedule">
+        select * from schedule where mail=#{mail} and flag=#{flag}
+    </select>
+    <select id="getByenglish" resultType="com.shi.electronicdictionary.pojo.Schedule">
+        select * from schedule where mail=#{mail} and flag=#{flag} and english=#{english}
+    </select>
+
+
+
+</mapper>

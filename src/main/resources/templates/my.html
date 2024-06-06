@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>个人资料</title>
+    <link rel="shortcut icon" href="#" type="image/png">
+    <div th:include="common :: commonheader"></div>
+
+</head>
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+    <div th:replace="common :: #navbar"></div>
+    <div th:replace="common :: #sidebar"></div>
+    <!-- Content Wrapper-->
+    <div class="content-wrapper">
+        <!-- content -->
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-8">
+                        <!-- About Me Box -->
+                        <div class="card card-primary">
+                            <div class="card-header">
+                                <h3 class="card-title">个人资料</h3>
+                            </div>
+                            <!-- /.card-header -->
+                            <div class="card-body" >
+                                <strong><i class="fas fa-user mr-1"></i> 昵称</strong>
+                                <p th:text="${session.user.name}"></p>
+                                <hr/>
+                                <strong><i class="fas fa-book mr-1"></i>资料库</strong>
+                                <p class="text-muted" th:text="${session.user.library}"></p>
+                                <hr/>
+                                <strong><a href="history.html" th:href="@{/my/history}" class="fa fa-history mr-1">历史记录</a> </strong>
+                                <p class="text-muted"></p>
+                                <hr/>
+                                <strong><i class="fas fa-toggle-on mr-1"></i>开启提醒</strong>
+                                <p class="text-muted" th:text="${session.user.flag2=='否'?'开':session.user.flag2}"></p>
+                                <hr/>
+                                <hr/>
+                                <strong><i class="fas fa-stopwatch mr-1 "></i>提醒时间</strong>
+                                <p class="text-muted " th:text="${session.user.time}"></p>
+                                <hr/>
+                                <strong><i class="fas fa-file-word mr-1 "></i>每日需背诵数量</strong>
+                                <p class="text-muted " th:text="${session.user.count}"></p>
+                                <hr/>
+                                <strong><i class="fas fa-file-word mr-1 "></i>今日背诵数量</strong>
+                                <p class="text-muted " th:text="${session.user.flag}"></p>
+                                <a class="btn btn-block btn-primary"
+                                   th:href="@{/updateUser}">修改用户信息</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
+        </div><!-- /.container-fluid -->
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+    <div th:replace="common :: #footer"></div>
+</div>
+<div th:replace="common :: #sricpt"></div>
+<!-- jQuery -->
+<script src="../static/js/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="../static/js/bootstrap.min.js"></script>
+<!-- AdminLTE App -->
+<script src="../static/js/adminlte.min.js"></script>
+</body>
+</html>

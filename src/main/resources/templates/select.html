@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>查询单词</title>
+    <link rel="shortcut icon" href="#" type="image/png">
+    <!-- Google Font: Source Sans Pro -->
+    <!--<link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    &lt;!&ndash; Font Awesome Icons &ndash;&gt;
+    <link rel="stylesheet" href="../static/fonts/fontawesome-free/css/all.min.css">
+    &lt;!&ndash; Theme style &ndash;&gt;
+    <link rel="stylesheet" href="../static/css/adminlte.min.css">-->
+    <div th:include="common :: commonheader"></div>
+    <style type="text/css">
+        #select {
+            class: active;
+        }
+    </style>
+</head>
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+    <div th:replace="common :: #navbar"></div>
+    <div th:replace="common :: #sidebar(active='select.html')"></div>
+    <div class="content-wrapper">
+        <section class="content">
+            <div class="container-fluid">
+                <h2 class="text-center display-4">查询</h2>
+                <div class="row">
+                    <div class="col-md-8 offset-md-2">
+                        <form th:action="@{/select/result}">
+                            <div class="input-group">
+                                <input type="search" name="word" class="form-control form-control-lg"
+                                       placeholder="输入想要查询的单词">
+                                <div class="input-group-append">
+                                    <button type="submit" class="btn btn-lg btn-default">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <p style="color: #ff0000 ; margin-top: 10px; line-height:40px; height: 40px;text-align: center;"
+                               th:text="${session.msg}" th:if="${not #strings.isEmpty(session.msg)}"></p>
+                        </form>
+                    </div>
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">结果</h3>
+                            </div>
+
+                            <!-- /.card-header -->
+                            <div class="card-body table-responsive p-0">
+                                <table class="table table-hover text-nowrap">
+                                    <thead>
+                                    <tr>
+                                        <th>英语</th>
+                                        <th>中文</th>
+                                        <th>声音</th>
+                                        <th>操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="dictionarySelect:${session.dictionarySelect}">
+                                        <td th:text="${dictionarySelect.getEnglish()}"></td>
+                                        <td th:text="${dictionarySelect.getChinese()}"></td>
+                                        <td width="350px">
+                                            <audio style="width: 300px" controls controlslist="nodownload  nofullscreen noremoteplayback">
+                                                <source th:src="@{${dictionarySelect.getVoice()}} "
+                                                        src="../static/voice/1.mp3"
+                                                        type="audio/mpeg">
+                                            </audio>
+                                        </td>
+                                        <td>
+                                            <a class="btn btn-block btn-primary" th:href="@{/addSelect/}+${dictionarySelect.getEnglish()}">添加单词本</a>
+                                        </td>
+                                    </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                        <!-- /.card -->
+
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </div>
+    <!-- /.content-wrapper -->
+    <div th:replace="common :: #footer"></div>
+</div>
+<div th:replace="common :: #sricpt"></div>
+
+</body>
+</html>

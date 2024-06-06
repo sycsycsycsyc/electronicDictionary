@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.shi.electronicdictionary.mapper.UserMapper">
+
+    <select id="getByMail" resultType="com.shi.electronicdictionary.pojo.User">
+        select * from user where mail=#{mail}
+    </select>
+    <insert id="insert">
+        insert into user(name,password,mail) values (#{name},#{password},#{mail})
+    </insert>
+    <update id="updatePw">
+        update user set password=#{password}
+                        where mail=#{mail}
+    </update>
+    <update id="updateLi">
+        update user set library=#{library}
+                        where mail=#{mail}
+    </update>
+    <update id="updateTime">
+        update user set time=#{localTime}
+                        where mail=#{mail}
+    </update>
+
+</mapper>

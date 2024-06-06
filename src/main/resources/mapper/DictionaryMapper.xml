@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.shi.electronicdictionary.mapper.DictionaryMapper">
+
+    <select id="getAll" resultType="com.shi.electronicdictionary.pojo.Dictionary">
+        SELECT *
+        FROM dictionary
+        WHERE NOT EXISTS(SELECT 1
+                         FROM SCHEDULE
+                         WHERE SCHEDULE.flag = 'common'
+                           AND SCHEDULE.mail = #{mail}
+                           AND dictionary.english = `schedule`.english)
+    </select>
+
+    <select id="getAllPage" resultType="com.shi.electronicdictionary.pojo.Dictionary">
+        SELECT *
+        FROM dictionary
+        WHERE NOT EXISTS(SELECT 1
+                         FROM SCHEDULE
+                         WHERE SCHEDULE.flag = 'common'
+                           AND SCHEDULE.mail = #{mail}
+                           AND dictionary.english = `schedule`.english)
+    </select>
+    <select id="getByFlag" resultType="com.shi.electronicdictionary.pojo.Dictionary">
+        select *
+        from dictionary
+        where flag = #{flag}
+    </select>
+    <!--添加资料库-->
+    <select id="getByFlag4" resultType="com.shi.electronicdictionary.pojo.Dictionary">
+        SELECT *
+        FROM dictionary
+        WHERE flag4 = '1'
+          and NOT EXISTS(SELECT 1
+                         FROM SCHEDULE
+                         WHERE SCHEDULE.flag = '四级单词'
+                           AND SCHEDULE.mail = #{mail}
+                           AND dictionary.english = `schedule`.english)
+    </select>
+    <select id="getByFlag6" resultType="com.shi.electronicdictionary.pojo.Dictionary">
+        SELECT *
+        FROM dictionary
+        WHERE flag6 = '1'
+          and NOT EXISTS(SELECT 1
+                         FROM SCHEDULE
+                         WHERE SCHEDULE.flag = '六级单词'
+                           AND SCHEDULE.mail = #{mail}
+                           AND dictionary.english = `schedule`.english)
+    </select>
+    <select id="getByFlagyan" resultType="com.shi.electronicdictionary.pojo.Dictionary">
+        SELECT *
+        FROM dictionary
+        WHERE flagyan = '1'
+          and NOT EXISTS(SELECT 1
+                         FROM SCHEDULE
+                         WHERE SCHEDULE.flag = '考研单词'
+                           AND SCHEDULE.mail = #{mail}
+                           AND dictionary.english = `schedule`.english)
+    </select>
+
+
+    <select id="1" resultType="com.shi.electronicdictionary.pojo.Dictionary">
+        SELECT *
+        FROM dictionary
+        WHERE english NOT IN (
+            SELECT english
+            FROM SCHEDULE
+            WHERE SCHEDULE.flag = 'common'
+              AND SCHEDULE.mail = '1010707431@qq.com')
+    </select>
+</mapper>

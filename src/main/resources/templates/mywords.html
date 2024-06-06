@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>单词本</title>
+    <link rel="shortcut icon" href="#" type="image/png">
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="../static/fonts/fontawesome-free/css/all.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="../static/css/adminlte.min.css">
+
+    <div th:include="common :: commonheader"></div>
+    <style>
+        li {
+            display: inline-block;
+        }
+    </style>
+</head>
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+    <div th:replace="common :: #navbar"></div>
+    <div th:replace="common :: #sidebar(active='mywords.html')"></div>
+    <!-- Content Wrapper-->
+    <div class="content-wrapper">
+        <!-- content -->
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">我的单词本</h3>
+                                <div class="card-tools">
+                                    <form class="input-group input-group-sm" style="width: 150px;"
+                                          th:action="@{/selectMyWord}">
+                                        <input type="text" name="english" class="form-control float-right"
+                                               placeholder="查询单词本单词">
+                                        <div class="input-group-append">
+                                            <button type="submit" class="btn btn-default">
+                                                <i class="fas fa-search"></i>
+                                            </button>
+                                        </div>
+                                        <hr/>
+                                    </form>
+                                </div>
+                                <p style="color: #ff0000 ; margin-top: 10px; line-height:40px; height: 40px;text-align: center;"
+                                   th:text="${session.msg}" th:if="${not #strings.isEmpty(session.msg)}"></p>
+                            </div>
+                            <!-- /.card-header -->
+                            <div class="card-body table-responsive p-0">
+                                <table class="table table-hover text-nowrap">
+                                    <thead>
+                                    <tr>
+                                        <th>英语</th>
+                                        <th>中文</th>
+                                        <th>声音</th>
+                                        <th>单词描述</th>
+                                        <th>操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="myWords:${session.myWords.getList()}">
+                                        <td th:text="${myWords.getEnglish()}"></td>
+                                        <td th:text="${myWords.getChinese()}"></td>
+                                        <td width="350px">
+                                            <audio style="width: 300px" controls
+                                                   controlslist="nodownload  nofullscreen noremoteplayback">
+                                                <source th:src="@{${myWords.getVoice()}} "
+                                                        src="../static/voice/1.mp3"
+                                                        type="audio/mpeg">
+                                            </audio>
+                                        </td>
+                                        <td th:text="${myWords.getDescription()}"></td>
+                                        <td>
+                                            <a class="btn btn-block btn-primary"
+                                               th:href="@{/delete/}+${myWords.getEnglish()}">删除</a>
+                                        </td>
+                                        <td>
+                                            <a class="btn btn-block btn-primary"
+                                               th:href="@{/update/}+${myWords.getEnglish()}">修改</a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                        <div style="margin-top: 20px;text-align:center">
+                            <div>
+                                当前第<span th:text="${session.myWords.pageNum}"></span> 页，
+                                共<span th:text="${session.myWords.pages}"></span> 页，
+                                <span th:text="${session.myWords.total}"></span>条记录
+                            </div>
+                            <hr/>
+                            <ul style="white-space:nowrap;" class="col-12">
+                                <!--th:if="${studentPageInfo.hasPreviousPage}"}-->
+                                <li th:if="${session.myWords.hasPreviousPage}" }>
+                                    <!--hasPreviousPage默认值为false， 如果有上一页，则不显示首页-->
+                                    <a class="btn btn-block btn-primary"
+                                       th:href="@{/mywords?pageNum=}+${1}">首页</a>
+                                </li>
+                                <li th:if="${session.myWords.hasPreviousPage}">
+                                    <!--hasPreviousPage默认值为false， 如果有上一页，则不显示-->
+                                    <a class="btn btn-block btn-primary"
+                                       th:href="@{/mywords?pageNum=}+${session.myWords.prePage}">上一页</a>
+                                </li>
+                                <li th:each="nav:${session.myWords.navigatepageNums}">
+                                    <!--navigatepageNums是一个数组：遍历所有导航页号。 -->
+                                    <a class="btn btn-block btn-primary"
+                                       th:href="@{/mywords?pageNum=}+${nav}" th:text="${nav}"
+                                       th:if="${nav != session.myWords.pageNum}"></a>
+                                    <!--如果不是当前页则可以跳转其他页面。遍历展示-->
+                                    <a class="btn btn-block btn-primary"
+                                       th:class="${'btn btn-block btn-info'}"
+                                       th:if="${nav == session.myWords.pageNum}"
+                                       th:text="${nav}"></a>
+                                    <!--如果是当前页则有样式。遍历 展示-->
+                                </li>
+                                <li th:if="${session.myWords.hasNextPage}">
+                                    <!--hasNextPage默认值为false， 如果没有下一页，则不显示-->
+                                    <a class="btn btn-block btn-primary"
+                                       th:href="@{/mywords(pageNum=${session.myWords.nextPage})}">下一页</a>
+                                </li>
+                                <li th:if="${session.myWords.pageNum < session.myWords.pages}"
+                                >
+                                    <!--如果当前页小于总页数则不显示尾页 -->
+                                    <a class="btn btn-block btn-primary"
+                                       th:href="@{/mywords(pageNum=${session.myWords.pages})}">尾页</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- /.card -->
+                    </div>
+                </div>
+                <!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+    <div th:replace="common :: #footer"></div>
+</div>
+<div th:replace="common :: #sricpt"></div>
+
+
+<!-- jQuery -->
+<script src="../static/js/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="../static/js/bootstrap.min.js"></script>
+<!-- AdminLTE App -->
+<script src="../static/js/adminlte.min.js"></script>
+</body>
+</html>

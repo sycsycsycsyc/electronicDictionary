@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>修改资料库</title>
+    <link rel="shortcut icon" href="#" type="image/png">
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="../static/fonts/fontawesome-free/css/all.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="../static/css/adminlte.min.css">
+
+    <div th:include="common :: commonheader"></div>
+
+</head>
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+    <div th:replace="common :: #navbar"></div>
+    <div th:replace="common :: #sidebar(active='libraries.html')"></div>
+    <!-- Content Wrapper-->
+    <div class="content-wrapper">
+        <!-- content -->
+        <div class="content">
+            <div class="container-fluid">
+                <div class="card card-success">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12 col-lg-6 col-xl-4" style="padding: 10px" th:each="library:${session.libraries}">
+                                <div class="card mb-2 bg-gradient-dark" >
+                                    <img class="card-img-top" th:src="@{/images/background.jpg}" th:alt="${library.getName()}" style="height: 200px">
+                                    <div class="card-img-overlay d-flex flex-column justify-content-end" style="height: auto">
+                                        <a class="card-title text-primary text-white "style="margin-top: 10px"  th:href="@{/chooselibrary/}+${library.getName()}" th:text="${library.getName()}"></a>
+                                        <p class="card-text text-white pt-2" th:text="${library.getDescription()}"></p>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+    <div th:replace="common :: #footer"></div>
+</div>
+<div th:replace="common :: #sricpt"></div>
+
+
+<!-- jQuery -->
+<script src="../static/js/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="../static/js/bootstrap.min.js"></script>
+<!-- AdminLTE App -->
+<script src="../static/js/adminlte.min.js"></script>
+</body>
+</html>
