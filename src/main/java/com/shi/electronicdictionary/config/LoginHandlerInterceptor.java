@@ -14,7 +14,9 @@ public class LoginHandlerInterceptor implements HandlerInterceptor {
     @Autowired
     UserService userService;
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    public boolean preHandle(HttpServletRequest request,
+                             HttpServletResponse response,
+                             Object handler) throws Exception {
         //登录成功之后，应该有用户的session
         Object loginuser = request.getSession().getAttribute("loginuser");
         if (loginuser != null) {

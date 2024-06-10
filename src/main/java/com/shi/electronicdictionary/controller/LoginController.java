@@ -35,8 +35,7 @@ public class LoginController {
             @RequestParam(value = "remember", required = false) String remember,
             Model model,
             HttpSession session,
-            HttpServletResponse response,
-            HttpServletRequest request
+            HttpServletResponse response
     ) {
         //具体的业务
         User user = userService.getByMail(username);
@@ -45,22 +44,27 @@ public class LoginController {
         if (user != null) {
             String library = user.getLibrary();
             //添加资料库
-            if (library.equals("common")) {
-                PageHelper.startPage(1, 3);
-                pageInfo = new PageInfo<>(dictionaryService.getAll(username));
-                //dictionary = dictionaryService.getAll(username);
-            } else if (library.equals("四级单词")) {
-                PageHelper.startPage(1, 3);
-                pageInfo = new PageInfo<>(dictionaryService.getByFlag4(username));
-                //dictionary = dictionaryService.getByFlag4(username);
-            } else if (library.equals("六级单词")) {
-                PageHelper.startPage(1, 3);
-                pageInfo = new PageInfo<>(dictionaryService.getByFlag6(username));
-                //dictionary = dictionaryService.getByFlag6(username);
-            } else {
-                PageHelper.startPage(1, 3);
-                pageInfo = new PageInfo<>(dictionaryService.getByFlagyan(username));
-                //dictionary = dictionaryService.getByFlagyan(username);
+            switch (library) {
+                case "common":
+                    PageHelper.startPage(1, 3);
+                    pageInfo = new PageInfo<>(dictionaryService.getAll(username));
+                    //dictionary = dictionaryService.getAll(username);
+                    break;
+                case "四级单词":
+                    PageHelper.startPage(1, 3);
+                    pageInfo = new PageInfo<>(dictionaryService.getByFlag4(username));
+                    //dictionary = dictionaryService.getByFlag4(username);
+                    break;
+                case "六级单词":
+                    PageHelper.startPage(1, 3);
+                    pageInfo = new PageInfo<>(dictionaryService.getByFlag6(username));
+                    //dictionary = dictionaryService.getByFlag6(username);
+                    break;
+                default:
+                    PageHelper.startPage(1, 3);
+                    pageInfo = new PageInfo<>(dictionaryService.getByFlagyan(username));
+                    //dictionary = dictionaryService.getByFlagyan(username);
+                    break;
             }
 
             if (user.getPassword().equals(password)) {
