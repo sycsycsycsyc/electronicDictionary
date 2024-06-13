@@ -2,16 +2,15 @@ package com.shi.electronicdictionary.service;
 
 import com.shi.electronicdictionary.mapper.HistoryMapper;
 import com.shi.electronicdictionary.pojo.History;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.swing.*;
+import javax.annotation.Resource;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 @Service
 public class HistoryServiceImpl  implements HistoryService{
-    @Autowired
+    @Resource
     HistoryMapper historyMapper;
     @Override
     public List<History> getByMail(String mail) {

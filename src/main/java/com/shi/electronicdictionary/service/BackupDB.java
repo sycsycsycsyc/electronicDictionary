@@ -15,7 +15,7 @@ public class BackupDB{
     private String userName;
     @Value("${spring.datasource.password}")
     private String password;
-    private String sqlPath="/electronicDictionary/db_backup/";
+    private final String sqlPath="/electronicDictionary/db_backup/";
 
     //获取数据库名
     public String getDataBaseName() {
@@ -38,7 +38,7 @@ public class BackupDB{
         String fileName = time + "_" + "backup.sql";
         StringBuilder sb = new StringBuilder();        // 拼接备份命令
         sb.append("mysqldump").append(" --opt").append(" -h ").append(host).append(" --user=").append(userName).append(" --password=").append(password);
-        sb.append(" --result-file=").append(sqlPath + fileName).append(" --default-character-set=utf8 ").append(dataBaseName);
+        sb.append(" --result-file=").append(sqlPath).append(fileName).append(" --default-character-set=utf8 ").append(dataBaseName);
         try {
             Process exec = Runtime.getRuntime().exec(sb.toString());
             if (exec.waitFor() == 0) {

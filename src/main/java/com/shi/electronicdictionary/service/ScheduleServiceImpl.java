@@ -2,14 +2,14 @@ package com.shi.electronicdictionary.service;
 
 import com.shi.electronicdictionary.mapper.ScheduleMapper;
 import com.shi.electronicdictionary.pojo.Schedule;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 @Service
 public class ScheduleServiceImpl implements ScheduleService {
-    @Autowired
+    @Resource
     ScheduleMapper scheduleMapper;
 
     @Override

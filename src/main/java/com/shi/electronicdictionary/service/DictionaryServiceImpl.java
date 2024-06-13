@@ -4,16 +4,16 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.shi.electronicdictionary.mapper.DictionaryMapper;
 import com.shi.electronicdictionary.pojo.Dictionary;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 @Service
 public class DictionaryServiceImpl implements DictionaryService {
 
 
-    @Autowired
+    @Resource
     DictionaryMapper dictionaryMapper;
 
     @Override
@@ -29,8 +29,7 @@ public class DictionaryServiceImpl implements DictionaryService {
     @Override
     public PageInfo<Dictionary> getAllPage(Integer pageNum, Integer pageSize,String mail) {
         PageHelper.startPage(pageNum,pageSize);
-        PageInfo<Dictionary> pageInfo = new PageInfo<>(dictionaryMapper.getAll( mail));
-        return pageInfo;
+        return new PageInfo<>(dictionaryMapper.getAll( mail));
     }
 
     @Override

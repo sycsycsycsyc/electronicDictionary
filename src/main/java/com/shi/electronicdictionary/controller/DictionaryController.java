@@ -3,23 +3,21 @@ package com.shi.electronicdictionary.controller;
 import com.shi.electronicdictionary.pojo.Dictionary;
 import com.shi.electronicdictionary.service.DictionaryService;
 import com.shi.electronicdictionary.service.HistoryService;
-import com.shi.electronicdictionary.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Controller
 public class DictionaryController {
-    @Autowired
+    @Resource
     DictionaryService dictionaryService;
-    @Autowired
-    UserService userService;
-    @Autowired
+
+    @Resource
     HistoryService historyService;
 
     @RequestMapping("/select/result")

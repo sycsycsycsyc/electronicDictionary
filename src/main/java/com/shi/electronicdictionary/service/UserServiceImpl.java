@@ -2,15 +2,15 @@ package com.shi.electronicdictionary.service;
 
 import com.shi.electronicdictionary.mapper.UserMapper;
 import com.shi.electronicdictionary.pojo.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.time.LocalTime;
 import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
-    @Autowired
+    @Resource
     UserMapper userMapper;
 
     @Override

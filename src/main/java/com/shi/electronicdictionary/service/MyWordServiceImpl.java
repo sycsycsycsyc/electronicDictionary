@@ -2,14 +2,14 @@ package com.shi.electronicdictionary.service;
 
 import com.shi.electronicdictionary.mapper.MyWordMapper;
 import com.shi.electronicdictionary.pojo.MyWord;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 @Service
 public class MyWordServiceImpl implements MyWordService {
-   @Autowired
+    @Resource
     MyWordMapper myWordMapper;
 
     @Override

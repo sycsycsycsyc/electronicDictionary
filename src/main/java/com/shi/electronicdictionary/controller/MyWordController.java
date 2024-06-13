@@ -6,12 +6,12 @@ import com.shi.electronicdictionary.pojo.MyWord;
 import com.shi.electronicdictionary.service.DictionaryService;
 import com.shi.electronicdictionary.service.HistoryService;
 import com.shi.electronicdictionary.service.MyWordService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
@@ -19,11 +19,11 @@ import java.time.LocalTime;
 
 @Controller
 public class MyWordController {
-    @Autowired
+    @Resource
     MyWordService myWordService;
-    @Autowired
+    @Resource
     DictionaryService dictionaryService;
-    @Autowired
+    @Resource
     HistoryService historyService;
 
     @RequestMapping("/add/{english}")
@@ -49,8 +49,7 @@ public class MyWordController {
 
     @RequestMapping("/delete/{english}")
     public String delete(@PathVariable String english,
-                         HttpServletRequest request,
-                         HttpSession session) {
+                         HttpServletRequest request) {
         String mail = (String) request.getSession().getAttribute("loginuser");
         myWordService.delete(mail, english);
         LocalDate localDate = LocalDate.now();
@@ -80,8 +79,7 @@ public class MyWordController {
     @RequestMapping("/updateWord")
     public String updateWord(HttpServletRequest request,
                              @RequestParam("chinese") String chinese,
-                             @RequestParam("description") String description,
-                             HttpSession session
+                             @RequestParam("description") String description
     ) {
         String mail = (String) request.getSession().getAttribute("loginuser");
         MyWord myWord = (MyWord) request.getSession().getAttribute("myWord");

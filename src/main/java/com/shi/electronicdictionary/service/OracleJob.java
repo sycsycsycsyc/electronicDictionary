@@ -1,34 +1,31 @@
 package com.shi.electronicdictionary.service;
 
 import com.shi.electronicdictionary.pojo.User;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.io.File;
 import java.time.LocalDate;
 import java.util.List;
 
 @Service
 public class OracleJob {
-    @Autowired
-    JavaMailSenderImpl mailSender;
-    @Autowired
+    @Resource
     UserService userService;
-    @Autowired
+    @Resource
     BackupDB backupDB;
-    @Autowired
+    @Resource
     MailService mailService;
 
 
     @Scheduled(cron = "0 0 0 * * ?")
     public void clear() {
         List<User> all = userService.getAll();
-        for (int i = 0; i < all.size(); i++) {
-            userService.updateFlag(0, all.get(i).getMail());
-            if (all.get(i).getFlag2().equals("否")) {
-                userService.updateFlag2("开", all.get(i).getMail());
+        for (User user : all) {
+            userService.updateFlag(0, user.getMail());
+            if (user.getFlag2().equals("否")) {
+                userService.updateFlag2("开", user.getMail());
             }
         }
 
@@ -39,7 +36,7 @@ public class OracleJob {
         LocalDate localDate = LocalDate.now();
         //保存七天
         LocalDate before = localDate.minusDays(7);
-        String fileBeforeName = before.toString()+"_backup.sql";
+        String fileBeforeName = before +"_backup.sql";
         File fileBefore = new File("/electronicDictionary/db_backup/", fileBeforeName);
         if (fileBefore.exists()) {
             fileBefore.delete();

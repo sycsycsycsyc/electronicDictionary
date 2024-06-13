@@ -4,11 +4,11 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.shi.electronicdictionary.pojo.*;
 import com.shi.electronicdictionary.service.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -20,17 +20,17 @@ import java.util.List;
 @Controller
 
 public class MainController {
-    @Autowired
+    @Resource
     UserService userService;
-    @Autowired
+    @Resource
     DictionaryService dictionaryService;
-    @Autowired
+    @Resource
     MyWordService myWordService;
-    @Autowired
+    @Resource
     LibraryService libraryService;
-    @Autowired
+    @Resource
     ScheduleService scheduleService;
-    @Autowired
+    @Resource
     HistoryService historyService;
 
 
@@ -69,22 +69,27 @@ public class MainController {
         String library = user.getLibrary();
         //添加资料库
         PageInfo<Dictionary> pageInfo;
-        if (library.equals("common")) {
-            //dictionary = dictionaryService.getAll(mail);
-            PageHelper.startPage(pageNum, pageSize);
-            pageInfo = new PageInfo<>(dictionaryService.getAll(mail));
-        } else if (library.equals("四级单词")) {
-            PageHelper.startPage(pageNum, pageSize);
-            pageInfo = new PageInfo<>(dictionaryService.getByFlag4(mail));
-            //dictionary = dictionaryService.getByFlag4(mail);
-        } else if (library.equals("六级单词")) {
-            PageHelper.startPage(pageNum, pageSize);
-            pageInfo = new PageInfo<>(dictionaryService.getByFlag6(mail));
-            //dictionary = dictionaryService.getByFlag6(mail);
-        } else {
-            //dictionary = dictionaryService.getByFlagyan(mail);
-            PageHelper.startPage(pageNum, pageSize);
-            pageInfo = new PageInfo<>(dictionaryService.getByFlagyan(mail));
+        switch (library) {
+            case "common":
+                //dictionary = dictionaryService.getAll(mail);
+                PageHelper.startPage(pageNum, pageSize);
+                pageInfo = new PageInfo<>(dictionaryService.getAll(mail));
+                break;
+            case "四级单词":
+                PageHelper.startPage(pageNum, pageSize);
+                pageInfo = new PageInfo<>(dictionaryService.getByFlag4(mail));
+                //dictionary = dictionaryService.getByFlag4(mail);
+                break;
+            case "六级单词":
+                PageHelper.startPage(pageNum, pageSize);
+                pageInfo = new PageInfo<>(dictionaryService.getByFlag6(mail));
+                //dictionary = dictionaryService.getByFlag6(mail);
+                break;
+            default:
+                //dictionary = dictionaryService.getByFlagyan(mail);
+                PageHelper.startPage(pageNum, pageSize);
+                pageInfo = new PageInfo<>(dictionaryService.getByFlagyan(mail));
+                break;
         }
         session.setAttribute("dictionary", pageInfo);
         return "main";
@@ -160,22 +165,27 @@ public class MainController {
         String library = user.getLibrary();
         //添加资料库
         PageInfo<Dictionary> pageInfo2;
-        if (library.equals("common")) {
-            //dictionary = dictionaryService.getAll(mail);
-            PageHelper.startPage(pageNum2, pageSize);
-            pageInfo2 = new PageInfo<>(dictionaryService.getAll(mail));
-        } else if (library.equals("四级单词")) {
-            PageHelper.startPage(pageNum2, pageSize);
-            pageInfo2 = new PageInfo<>(dictionaryService.getByFlag4(mail));
-            //dictionary = dictionaryService.getByFlag4(mail);
-        } else if (library.equals("六级单词")) {
-            PageHelper.startPage(pageNum2, pageSize);
-            pageInfo2 = new PageInfo<>(dictionaryService.getByFlag6(mail));
-            //dictionary = dictionaryService.getByFlag6(mail);
-        } else {
-            //dictionary = dictionaryService.getByFlagyan(mail);
-            PageHelper.startPage(pageNum2, pageSize);
-            pageInfo2 = new PageInfo<>(dictionaryService.getByFlagyan(mail));
+        switch (library) {
+            case "common":
+                //dictionary = dictionaryService.getAll(mail);
+                PageHelper.startPage(pageNum2, pageSize);
+                pageInfo2 = new PageInfo<>(dictionaryService.getAll(mail));
+                break;
+            case "四级单词":
+                PageHelper.startPage(pageNum2, pageSize);
+                pageInfo2 = new PageInfo<>(dictionaryService.getByFlag4(mail));
+                //dictionary = dictionaryService.getByFlag4(mail);
+                break;
+            case "六级单词":
+                PageHelper.startPage(pageNum2, pageSize);
+                pageInfo2 = new PageInfo<>(dictionaryService.getByFlag6(mail));
+                //dictionary = dictionaryService.getByFlag6(mail);
+                break;
+            default:
+                //dictionary = dictionaryService.getByFlagyan(mail);
+                PageHelper.startPage(pageNum2, pageSize);
+                pageInfo2 = new PageInfo<>(dictionaryService.getByFlagyan(mail));
+                break;
         }
         session.setAttribute("dictionary", pageInfo2);
 
@@ -191,14 +201,20 @@ public class MainController {
         int scheduleCount = scheduleService.getCount(mail, flag);
         int allCount;
         //添加资料库
-        if (flag.equals("common")) {
-            allCount = scheduleService.getCountAll();
-        } else if (flag.equals("四级单词")) {
-            allCount = scheduleService.getCount4();
-        } else if (flag.equals("六级单词")) {
-            allCount = scheduleService.getCount6();
-        } else
-            allCount = scheduleService.getCountyan();
+        switch (flag) {
+            case "common":
+                allCount = scheduleService.getCountAll();
+                break;
+            case "四级单词":
+                allCount = scheduleService.getCount4();
+                break;
+            case "六级单词":
+                allCount = scheduleService.getCount6();
+                break;
+            default:
+                allCount = scheduleService.getCountyan();
+                break;
+        }
         float a = (float) scheduleCount / (float) allCount;
         DecimalFormat df = new DecimalFormat("0.0000");//格式化小数
         String a1 = df.format(a * 100);
