@@ -23,6 +23,7 @@ public class HistoryServiceImpl  implements HistoryService{
     }
 
     @Override
+    //@DataSource(name ="master")
     public int insert(String mail, LocalDate date, LocalTime time, String option, String project) {
         return historyMapper.insert(mail,date,time, option,project);
     }

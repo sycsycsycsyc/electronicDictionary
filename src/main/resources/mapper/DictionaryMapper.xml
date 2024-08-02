@@ -9,9 +9,9 @@
         SELECT *
         FROM dictionary
         WHERE NOT EXISTS(SELECT 1
-                         FROM SCHEDULE
-                         WHERE SCHEDULE.flag = 'common'
-                           AND SCHEDULE.mail = #{mail}
+                         FROM schedule
+                         WHERE schedule.flag = 'common'
+                           AND schedule.mail = #{mail}
                            AND dictionary.english = `schedule`.english)
     </select>
 
@@ -19,9 +19,9 @@
         SELECT *
         FROM dictionary
         WHERE NOT EXISTS(SELECT 1
-                         FROM SCHEDULE
-                         WHERE SCHEDULE.flag = 'common'
-                           AND SCHEDULE.mail = #{mail}
+                         FROM schedule
+                         WHERE schedule.flag = 'common'
+                           AND schedule.mail = #{mail}
                            AND dictionary.english = `schedule`.english)
     </select>
     <select id="getByFlag" resultType="com.shi.electronicdictionary.pojo.Dictionary">
@@ -35,9 +35,9 @@
         FROM dictionary
         WHERE flag4 = '1'
           and NOT EXISTS(SELECT 1
-                         FROM SCHEDULE
-                         WHERE SCHEDULE.flag = '四级单词'
-                           AND SCHEDULE.mail = #{mail}
+                         FROM schedule
+                         WHERE schedule.flag = '四级单词'
+                           AND schedule.mail = #{mail}
                            AND dictionary.english = `schedule`.english)
     </select>
     <select id="getByFlag6" resultType="com.shi.electronicdictionary.pojo.Dictionary">
@@ -45,9 +45,9 @@
         FROM dictionary
         WHERE flag6 = '1'
           and NOT EXISTS(SELECT 1
-                         FROM SCHEDULE
-                         WHERE SCHEDULE.flag = '六级单词'
-                           AND SCHEDULE.mail = #{mail}
+                         FROM schedule
+                         WHERE schedule.flag = '六级单词'
+                           AND schedule.mail = #{mail}
                            AND dictionary.english = `schedule`.english)
     </select>
     <select id="getByFlagyan" resultType="com.shi.electronicdictionary.pojo.Dictionary">
@@ -55,9 +55,9 @@
         FROM dictionary
         WHERE flagyan = '1'
           and NOT EXISTS(SELECT 1
-                         FROM SCHEDULE
-                         WHERE SCHEDULE.flag = '考研单词'
-                           AND SCHEDULE.mail = #{mail}
+                         FROM schedule
+                         WHERE schedule.flag = '考研单词'
+                           AND schedule.mail = #{mail}
                            AND dictionary.english = `schedule`.english)
     </select>
 
@@ -67,8 +67,8 @@
         FROM dictionary
         WHERE english NOT IN (
             SELECT english
-            FROM SCHEDULE
-            WHERE SCHEDULE.flag = 'common'
-              AND SCHEDULE.mail = '1010707431@qq.com')
+            FROM schedule
+            WHERE schedule.flag = 'common'
+              AND schedule.mail = '1010707431@qq.com')
     </select>
 </mapper>

@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 @EnableScheduling //开启基于注解的定时任务
+//@SpringBootApplication(exclude= {DataSourceAutoConfiguration.class})
 @SpringBootApplication
 public class MainApplication {
 

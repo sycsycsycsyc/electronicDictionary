@@ -9,11 +9,14 @@ import java.io.IOException;
 
 @Service
 public class BackupDB{
-    @Value("${spring.datasource.url}")
+   //@Value("${spring.shardingsphere.datasource.master.url}")
+    @Value("jdbc:mysql://59.110.66.69:3306/electronicdictionary?characterEncoding=utf8&useSSL=true&serverTimezone=GMT%2B8")
     private String url;
-    @Value("${spring.datasource.username}")
+    //@Value("${spring.shardingsphere.datasource.master.username}")
+    @Value("root")
     private String userName;
-    @Value("${spring.datasource.password}")
+    @Value("120120")
+    //@Value("${spring.shardingsphere.datasource.master.password}")
     private String password;
     private final String sqlPath="/electronicDictionary/db_backup/";
 
@@ -29,7 +32,7 @@ public class BackupDB{
 
     // 导出 sql 并返回相关信息
     public void exportSql(String time) {        // 指定导出的 sql 存放的文件夹
-        File saveFile = new File(sqlPath);
+            File saveFile = new File(sqlPath);
         if (!saveFile.exists()) {
             saveFile.mkdirs();
         }
