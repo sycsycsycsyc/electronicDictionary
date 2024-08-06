@@ -7,6 +7,7 @@ import com.shi.electronicdictionary.pojo.User;
 import com.shi.electronicdictionary.service.DictionaryService;
 import com.shi.electronicdictionary.service.MailService;
 import com.shi.electronicdictionary.service.UserService;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Controller
 public class LoginController {
@@ -27,6 +29,25 @@ public class LoginController {
     DictionaryService dictionaryService;
     @Resource
     MailService mailService;
+
+
+    //@Autowired
+    //private StringRedisTemplate RedisTemplate;
+    @Resource
+    //private RedisTemplate redisTemplate;
+    private StringRedisTemplate stringRedisTemplate;
+
+
+    public void addOrder() {
+        int keyId = ThreadLocalRandom.current().nextInt(1000) + 1;
+        String serialNo = UUID.randomUUID().toString();
+
+        String key = "ord:" + keyId;
+        String value = "京东订单" + serialNo;
+
+        stringRedisTemplate.opsForValue().set(key, value);
+
+    }
 
     @RequestMapping("/user/login")
     public String login(
@@ -68,6 +89,7 @@ public class LoginController {
             }
 
             if (user.getPassword().equals(password)) {
+                addOrder();
                 if (remember == null) {
                     Cookie cookie = new Cookie("token", "");
                     cookie.setMaxAge(0);   //Cookie从服务器端发过来的时候就已经是一个已过时的Cookie

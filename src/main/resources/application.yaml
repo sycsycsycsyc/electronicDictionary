@@ -1,4 +1,6 @@
 spring:
+  #数据库主从复制
+  #方法1sharding-jdbc
   main:
     allow-bean-definition-overriding: true
   shardingsphere:
@@ -43,6 +45,7 @@ spring:
   thymeleaf:
     cache: false
   datasource:
+    #方法2创建多个数据连接池，动态
     #    username: root
     #    password: 120120
     #    url: jdbc:mysql://59.110.66.69:3306/electronicdictionary?characterEncoding=utf8&useSSL=true&serverTimezone=GMT%2B8
